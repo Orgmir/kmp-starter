@@ -1,4 +1,4 @@
-package app.luisramos.ler
+package dev.luisramos.mppstarter
 
 interface Platform {
     val name: String

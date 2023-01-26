@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Ler"
+rootProject.name = "MppStarter"
 include(":androidApp")
 include(":shared")

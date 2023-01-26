@@ -4,7 +4,7 @@ import java.io.File
 import java.io.FileWriter
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.copyTo
+import kotlin.io.path.deleteIfExists
 import kotlin.io.path.isDirectory
 import kotlin.io.path.name
 import kotlin.io.path.pathString
@@ -39,17 +39,24 @@ replaceInFile(
     Regex("(?<=const val AppNamespace = \")(.*)(?=\")"), packageName
 )
 
+println("Setting Bundle identifier in iOS .xcodeproj to $packageName")
+replaceInFile(
+    "iosApp/iosApp.xcodeproj/project.pbxproj",
+    "(?<=PRODUCT_BUNDLE_IDENTIFIER = )(.*)(?=;)".toRegex(),
+    packageName
+)
+
 listOf(
     "shared/src/androidMain/kotlin/",
     "shared/src/commonMain/kotlin/",
     "shared/src/iosMain/kotlin/",
     "androidApp/src/main/java/",
-).forEach { path ->
+).forEach { pathname ->
     // find all files in folder
-    Files.walk(Path.of(path))
+    val path = Path.of(pathname)
+    Files.walk(path)
         .filter(Files::isRegularFile)
         .forEach { file ->
-            // Rewrite package
             val text = file.readText()
             // get old package
             val oldPackage = "(?<=^package\\s)(.*)".toRegex().find(text)?.value.orEmpty()
@@ -57,32 +64,41 @@ listOf(
             if (oldPackage.isNotEmpty()) {
                 println("${file.pathString}: Renaming package")
                 val newText = text.replace(oldPackage, packageName)
-                FileWriter(file.toFile()).use { it.write(newText) }
-            }
 
-            // move file to new folder structure
-            val newFolder = Path.of("$path$folders", file.name)
-            if (!newFolder.isDirectory()) {
-                newFolder.toFile().mkdirs()
+                // create new folder structure
+                Path.of("$pathname$folders").toFile().mkdirs()
+
+                // move file to new folder structure
+                val newFile = Path.of("$pathname$folders", file.name).toFile()
+                println("${file.pathString}: Moving to ${newFile.absolutePath}")
+                newFile.createNewFile()
+                newFile.appendText(newText)
+
+                // delete existing file
+                file.deleteIfExists()
             }
-            println("${file.pathString}: Moving to ${newFolder.pathString}")
-            file.copyTo(newFolder, overwrite = true)
         }
+
+    // Delete empty directories
+    deleteIfEmpty(path)
 }
-
-
-// Move folders in shared and android to match package name
-//  shared/src/androidMain/kotlin
-//  shared/src/commonMain/kotlin
-//  shared/src/iosMain/kotlin
-//  androidApp/src/main/java
-// Rename package in all kotlin files
-// Rename bundle from "orgIdentifier.iosApp" to app namespace in iosApp.xcodeproj/project.pbxproj
-
 
 fun replaceInFile(filename: String, regex: Regex, newValue: String) {
     val file = File(filename)
     val newFile = file.readText()
         .replace(regex, newValue)
     FileWriter(file).use { it.write(newFile) }
+}
+
+fun deleteIfEmpty(dir: Path) {
+    // ignore if file
+    if (!dir.isDirectory()) return
+    // Try to delete children
+    Files.list(dir).forEach {
+        deleteIfEmpty(it)
+    }
+    // delete self if empty
+    if (!Files.list(dir).findAny().isPresent) {
+        Files.delete(dir)
+    }
 }

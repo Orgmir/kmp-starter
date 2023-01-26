@@ -9,7 +9,7 @@ data class Version(
     val code get() = major * 1000000 + minor * 10000 + patch * 100 + build
 }
 
-const val AppNamespace = "dev.luisramos.ler"
+const val AppNamespace = "dev.luisramos.mppstarter"
 
 object Versions {
     private const val BuildNumber = 1

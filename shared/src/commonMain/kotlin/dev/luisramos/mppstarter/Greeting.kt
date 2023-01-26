@@ -1,4 +1,4 @@
-package app.luisramos.ler
+package dev.luisramos.mppstarter
 
 class Greeting {
     private val platform: Platform = getPlatform()
