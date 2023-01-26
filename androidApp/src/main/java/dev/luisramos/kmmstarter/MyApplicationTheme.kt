@@ -1,4 +1,4 @@
-package dev.luisramos.mppstarter
+package dev.luisramos.kmmstarter
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
