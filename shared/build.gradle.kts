@@ -24,6 +24,11 @@ kotlin {
                 implementation(Dependencies.Coroutines)
                 implementation(Dependencies.Datetime)
                 implementation(Dependencies.Settings)
+
+                with(Dependencies.Ktor) {
+                    implementation(Core)
+                    implementation(Serialization)
+                }
             }
         }
         val commonTest by getting {
@@ -31,7 +36,11 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Dependencies.Ktor.OkHttp)
+            }
+        }
 //        val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -41,6 +50,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(Dependencies.Ktor.iOS)
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -52,8 +65,6 @@ kotlin {
             iosSimulatorArm64Test.dependsOn(this)
         }
     }
-
-
 }
 
 android {
