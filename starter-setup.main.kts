@@ -6,7 +6,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.isDirectory
-import kotlin.io.path.name
 import kotlin.io.path.pathString
 import kotlin.io.path.readText
 import kotlin.system.exitProcess
@@ -39,6 +38,12 @@ replaceInFile(
     Regex("(?<=const val AppNamespace = \")(.*)(?=\")"), packageName
 )
 
+println("Change database package in shared/build.gradle.kts")
+replaceInFile(
+    "shared/build.gradle.kts",
+    Regex("(?<=packageName.set(\")(.*)(?=\"))"), packageName
+)
+
 println("Setting Bundle identifier in iOS .xcodeproj to $packageName")
 replaceInFile(
     "iosApp/iosApp.xcodeproj/project.pbxproj",
@@ -49,6 +54,7 @@ replaceInFile(
 listOf(
     "shared/src/androidMain/kotlin/",
     "shared/src/commonMain/kotlin/",
+    "shared/src/commonMain/sqldelight/",
     "shared/src/iosMain/kotlin/",
     "androidApp/src/main/java/",
 ).forEach { pathname ->
@@ -57,26 +63,34 @@ listOf(
     Files.walk(path)
         .filter(Files::isRegularFile)
         .forEach { file ->
+
+            // Start with shared/src/iosMain/kotlin/dev/luisramos/kmmstarter
+            val rootPathCount = "$pathname$folders".split("/").size
+            // db/DriverFactoryNative.kt
+            val fileName = file.pathString.split("/").drop(rootPathCount).joinToString("/")
+            // Replace existing path with new path based of
+            val newFile = Path.of("$pathname$folders", fileName).toFile()
+
+            // create folder structure
+            newFile.parentFile.mkdirs()
+            // move file to new folder structure
+            newFile.createNewFile()
+
             val text = file.readText()
             // get old package
             val oldPackage = "(?<=^package\\s)(.*)".toRegex().find(text)?.value.orEmpty()
             // replace with new package
             if (oldPackage.isNotEmpty()) {
-                println("${file.pathString}: Renaming package")
-                val newText = text.replace(oldPackage, packageName)
-
-                // create new folder structure
-                Path.of("$pathname$folders").toFile().mkdirs()
-
-                // move file to new folder structure
-                val newFile = Path.of("$pathname$folders", file.name).toFile()
-                println("${file.pathString}: Moving to ${newFile.absolutePath}")
-                newFile.createNewFile()
+                val newPackage = packageName
+                val newText = text.replace(oldPackage, newPackage)
+                println("${file.pathString}: Renaming package, moving to ${newFile.absolutePath}")
                 newFile.appendText(newText)
-
-                // delete existing file
-                file.deleteIfExists()
+            } else {
+                println("${file.pathString}: Moving to ${newFile.absolutePath}")
+                newFile.appendText(text)
             }
+            // delete existing file
+            file.deleteIfExists()
         }
 
     // Delete empty directories
