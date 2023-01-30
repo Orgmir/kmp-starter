@@ -25,7 +25,7 @@ object Versions {
 
     const val Kotlin = "1.8.0"
     const val Ktor = "2.0.0"
-    const val SqlDelight = "1.5.5"
+    const val SqlDelight = "2.0.0-alpha05"
     const val ComposeCompiler = "1.4.0"
 }
 
@@ -49,11 +49,11 @@ object Dependencies {
     }
 
     object SqlDelight {
-        const val Android = "com.squareup.sqldelight:android-driver:${Versions.SqlDelight}"
-        const val iOS = "com.squareup.sqldelight:native-driver:${Versions.SqlDelight}"
-        const val Jdbc = "com.squareup.sqldelight:sqlite-driver:${Versions.SqlDelight}"
+        const val Android = "app.cash.sqldelight:android-driver:${Versions.SqlDelight}"
+        const val iOS = "app.cash.sqldelight:native-driver:${Versions.SqlDelight}"
+        const val Jdbc = "app.cash.sqldelight:sqlite-driver:${Versions.SqlDelight}"
         const val Coroutines =
-            "com.squareup.sqldelight:coroutines-extensions:${Versions.SqlDelight}"
+            "app.cash.sqldelight:coroutines-extensions:${Versions.SqlDelight}"
     }
 
     object Android {

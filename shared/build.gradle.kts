@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("com.android.library")
-    id("com.squareup.sqldelight")
+    id("app.cash.sqldelight")
 }
 
 kotlin {
@@ -24,6 +24,8 @@ kotlin {
                 implementation(Dependencies.Coroutines)
                 implementation(Dependencies.Datetime)
                 implementation(Dependencies.Settings)
+                implementation(Dependencies.SqlDelight.Coroutines)
+
 
                 with(Dependencies.Ktor) {
                     implementation(Core)
@@ -39,9 +41,15 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Dependencies.Ktor.OkHttp)
+                implementation(Dependencies.SqlDelight.Android)
             }
         }
-//        val androidTest by getting
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(Dependencies.SqlDelight.Jdbc)
+            }
+        }
+
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -53,6 +61,7 @@ kotlin {
 
             dependencies {
                 implementation(Dependencies.Ktor.iOS)
+                implementation(Dependencies.SqlDelight.iOS)
             }
         }
         val iosX64Test by getting
@@ -72,5 +81,13 @@ android {
     compileSdk = Versions.Android.CompileSdk
     defaultConfig {
         minSdk = Versions.Android.MinSdk
+    }
+}
+
+sqldelight {
+    databases {
+        create("KmmDatabase") {
+            packageName.set("dev.luisramos.kmmstarter.db")
+        }
     }
 }
