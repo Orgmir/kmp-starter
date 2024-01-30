@@ -1,4 +1,4 @@
-package dev.luisramos.kmmstarter
+package dev.luisramos.kmpstarter
 
 interface Platform {
     val name: String

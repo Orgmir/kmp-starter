@@ -1,13 +1,15 @@
-package dev.luisramos.kmmstarter.db
+package dev.luisramos.kmpstarter.db
 
 import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import dev.luisramos.kmmstarter.db.Database
+import dev.luisramos.kmpstarter.DriverFactory
 
-actual class DriverFactory(private val context: Context) {
-    actual fun createDriver(): SqlDriver {
-        val schema = KmmDatabase.Schema
+class DriverFactoryAndroid(private val context: Context) : DriverFactory {
+    override fun createDriver(): SqlDriver {
+        val schema = Database.Schema
         return AndroidSqliteDriver(
             schema = schema,
             context = context,

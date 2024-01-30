@@ -27,16 +27,16 @@ android {
         compose = true
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.ComposeCompiler
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             // Remove debug options for coroutines
@@ -61,4 +61,7 @@ dependencies {
         implementation(Material)
         implementation(Activity)
     }
+    implementation(Dependencies.SqlDelight.Coroutines)
+    implementation(Dependencies.Android.Lifecycle)
+    implementation(Dependencies.Android.LifecycleCompose)
 }

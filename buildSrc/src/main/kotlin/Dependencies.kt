@@ -9,7 +9,7 @@ data class Version(
     val code get() = major * 1000000 + minor * 10000 + patch * 100 + build
 }
 
-const val AppNamespace = "dev.luisramos.kmmstarter"
+const val AppNamespace = "dev.luisramos.kmpstarter"
 
 object Versions {
     private const val BuildNumber = 1
@@ -18,26 +18,26 @@ object Versions {
     val App = Version(0, 1, 0, Build)
 
     object Android {
-        const val CompileSdk = 33
+        const val CompileSdk = 34
         const val MinSdk = 24
-        const val TargetSdk = 33
+        const val TargetSdk = 34
     }
 
-    const val Kotlin = "1.8.0"
-    const val Ktor = "2.0.0"
-    const val SqlDelight = "2.0.0-alpha05"
-    const val ComposeCompiler = "1.4.0"
+    const val Kotlin = "1.9.21"
+    const val Ktor = "2.3.7"
+    const val SqlDelight = "2.0.1"
+    const val ComposeCompiler = "1.5.8"
 }
 
 object Dependencies {
-    const val Datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+    const val Datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
     const val Serialization =
-        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-    const val Settings = "com.russhwolf:multiplatform-settings-no-arg:1.0.0"
-    const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
+    const val Settings = "com.russhwolf:multiplatform-settings-no-arg:1.1.1"
+    const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
 
     object Kermit {
-        const val version = "1.2.2"
+        const val version = "2.0.2"
         const val Core = "co.touchlab:kermit:$version"
     }
 
@@ -58,8 +58,11 @@ object Dependencies {
 
     object Android {
 
+        const val Lifecycle = "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
+        const val LifecycleCompose = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
+
         object Compose {
-            const val Version = "1.3.3"
+            const val Version = "1.6.0"
 
             const val Ui = "androidx.compose.ui:ui:$Version"
             const val UiTooling = "androidx.compose.ui:ui-tooling:$Version"

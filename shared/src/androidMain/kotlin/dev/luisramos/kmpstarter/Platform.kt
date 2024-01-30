@@ -1,4 +1,4 @@
-package dev.luisramos.kmmstarter
+package dev.luisramos.kmpstarter
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"

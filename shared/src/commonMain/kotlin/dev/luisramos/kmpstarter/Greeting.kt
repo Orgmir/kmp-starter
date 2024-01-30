@@ -1,4 +1,4 @@
-package dev.luisramos.kmmstarter
+package dev.luisramos.kmpstarter
 
 class Greeting {
     private val platform: Platform = getPlatform()

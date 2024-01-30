@@ -1,0 +1,28 @@
+import kotlin.Boolean;
+import kotlinx.datetime.Instant;
+import kotlinx.datetime.LocalDateTime;
+
+CREATE TABLE todo(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    createdAt TEXT AS LocalDateTime NOT NULL,
+    updatedAt TEXT AS LocalDateTime NOT NULL,
+    content TEXT NOT NULL DEFAULT '',
+    done INTEGER AS Boolean,
+    doneAt TEXT AS LocalDateTime
+);
+
+CREATE VIEW todoModel AS
+SELECT * FROM todo;
+
+INSERT INTO todo (createdAt,updatedAt,content,done,doneAt)
+VALUES (date(),date(),'Buy carrots',0,NULL);
+
+findAll:
+SELECT * FROM todoModel;
+
+find:
+SELECT * FROM todoModel WHERE id = id;
+
+search:
+SELECT * FROM todoModel WHERE content LIKE '%' || :query || '%';
+

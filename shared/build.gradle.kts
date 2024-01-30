@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     listOf(
         iosX64(),
@@ -25,12 +25,8 @@ kotlin {
                 implementation(Dependencies.Datetime)
                 implementation(Dependencies.Settings)
                 implementation(Dependencies.SqlDelight.Coroutines)
-
-
-                with(Dependencies.Ktor) {
-                    implementation(Core)
-                    implementation(Serialization)
-                }
+                implementation(Dependencies.Ktor.Core)
+                implementation(Dependencies.Ktor.Serialization)
             }
         }
         val commonTest by getting {
@@ -50,28 +46,11 @@ kotlin {
             }
         }
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
         val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-
             dependencies {
                 implementation(Dependencies.Ktor.iOS)
                 implementation(Dependencies.SqlDelight.iOS)
             }
-        }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
         }
     }
 }
@@ -86,7 +65,7 @@ android {
 
 sqldelight {
     databases {
-        create("KmmDatabase") {
+        create("Database") {
             packageName.set("dev.luisramos.kmmstarter.db")
         }
     }

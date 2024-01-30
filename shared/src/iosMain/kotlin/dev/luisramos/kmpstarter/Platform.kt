@@ -1,4 +1,4 @@
-package dev.luisramos.kmmstarter
+package dev.luisramos.kmpstarter
 
 import platform.UIKit.UIDevice
 
