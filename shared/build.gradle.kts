@@ -66,7 +66,7 @@ android {
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("dev.luisramos.kmmstarter.db")
+            packageName.set("dev.luisramos.kmpstarter.db")
         }
     }
 }
